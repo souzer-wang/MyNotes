@@ -18,7 +18,7 @@ synchronized 是 jvm 的一种 **重量级锁**。
     - 当线程执行到 monitorenter 指令时会尝试获取对象所对应 monitor 的所有权
     - 如已经被其它线程获取，则需要等待锁释放
 
-4. 已
+
 
 
 
