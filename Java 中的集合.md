@@ -7,6 +7,8 @@
 - Map 下含有 HashTable，LinkedHashMap，HashMap，TreeMap
 - Collection 下还有个 Queue 接口，有 PriorityQueue 类
 
+# Collection
+
 ```mermaid
 graph TD
 I1[Collection] --> I11[Set]
@@ -76,3 +78,56 @@ Collection集合如何选择：
     - 如果是 List，但不知道哪个List，就用 ArrayList
 - 如果你知道是Collection集合，但是不知道使用谁，就用ArrayList。
 - 如果你知道用集合，就用ArrayList。
+
+# Map
+
+Map 接口有三个比较重要的实现类
+- 是否有序？
+  - 有序：TreeMap
+  - 无序：HashTable HashMap
+    - 是否同步？
+      - 同步：HashTable
+      - 不同步：HashMap
+
+比较：
+- HashTable
+  - 线程安全
+  - 效率较低
+  - 不允许null值
+  - 父类是 Dictionary
+- HashMap
+  - 非线程安全
+  - 效率较高
+  - 允许null值（key 和 value 都允许）
+  - 父类是 AbstractMap
+
+# 重点问题分析
+
+### TreeSet，LinkedHashSet 和 HashSet 的区别
+
+1. 介绍
+
+> 这三个在 java 中都是实现set的数据结构
+
+- TreeSet 的主要功能用于排序
+- LinkedHashSet 的主要功能用于保证FIFO（即有序，先进先出）
+- HashSet 只是通用的存储数据的集合
+
+2. 相同点
+
+- 不包含重复元素
+- 都不是线程安全
+
+3. 不同点
+
+- 插入数据速度排序（由快到慢）：HashSet-->LinkedHashSet-->TreeSet
+> TreeSet 最慢是因为它要实现内部排序
+
+- 有序性
+  - HashSet 不保证有序
+  - LinkedHashSet 保证FIFO，即按插入顺序排序
+  - TreeSet 内部实现排序，也可自定义排序
+- null
+  - HashSet 和 LinkedHashSet 允许存在null数据
+  - TreeSet 不可插入 null 数据
+
