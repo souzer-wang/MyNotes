@@ -1,3 +1,5 @@
+补充介绍一下 DAO，DAO的全称叫做Data Access Object，数据库访问对象。在Jpa中我们通常用Repository来表示dao，比如UserDao我们会使用UserRepository，如果添加实现的话就是，UserRepositoryImpl，这是使用习惯
+
 在SpringDataJPA中使用repository来进行数据层操作，作用相当于dao层，直接使用repository对象调用已经实现好的数据层操作方法。
 
 在项目中，我们通常需要为每一个实体类创建一个 repository 接口，通常继承自JpaRepository接口，以EnvironmentInfo这张表为例，申明的接口名一般是表名+Repository。
@@ -29,3 +31,10 @@ public interface TaskInfoRepository extends JpaRepository<TaskInfo, Long> {
                                   @Param("errorMsg") String errorMsg);
 }
 ```
+
+JpaRepository 的父类是
+- PagingAndSortingRepository
+- CrudRepository
+- Repository
+
+上面第一个接口定义了 分页 和 排序 功能，第二个顾名思义，全是CRUD操作，它保存和修改的方法都是save，第三个Repository接口没有定义任何功能，作用就是标识
