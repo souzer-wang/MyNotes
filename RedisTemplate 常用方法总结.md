@@ -1,5 +1,11 @@
 # RedisTemplate 常用方法总结
 
+**参考链接：** 
+
+链接一：[RedisTemplate常用方法总结](https://blog.csdn.net/sinat_22797429/article/details/89196933)
+
+连接二： [RedisTemplate操作Redis](https://blog.csdn.net/lydms/article/details/105224210)
+
 ## 前情提要
 
 1. **Redis**
@@ -21,19 +27,23 @@
 >  spring-data-redis 对 jedis 提供了如下功能：
 >
 > 1. 连接池自动管理，提供了一个高度封装的 “RedisTemplate” 类
+> <br>
 > 2. 针对jedis客户端大量的 api 进行归类封装，将同一类型操作封装为operation接口，具体有：
 >       1. ValueOperation：简单的 K-V 操作
 >       2. SetOperation：set 类型数据操作
 >       3. ZSetOperation：zset 类型数据操作
 >       4. HashOperation：针对 map 类型的数据操作
 >       5. ListOperation：针对list类型的数据操作
+> <br>
 > 3. 提供了对 key 的bound便捷化操作 API，通过bound封装指定的key，对应上面有：
 >       1. BoundValueOperation
 >       2. BoundSetOperation
 >       3. BoundListOperation
 >       4. BoundZSetOperation
 >       5. BoundHashOperation
+> <br>
 > 4. 将事务操作封装化，有容器控制
+> <br>
 > 5. 对于数据的 序列化和反序列化 提供了多种可选择策略(RedisSerializer)
 
 
@@ -47,7 +57,30 @@ Redis常用的数据类型有：
 - zSet
 - Sorted set
 
-**注：** 原文中的操作指令太多，这边只记录少量，其余可参考原文[RedisTemplate常用方法总结](https://blog.csdn.net/sinat_22797429/article/details/89196933)
+## RedisTemplate 的直接方法
+
+```java
+//首先使用 @Autowired 注入 Redis Template
+@Autowired
+private RedisTemplate redisTemplate;
+
+//删除单个 key
+redisTemplate.delete(key);
+
+//删除多个 key
+redisTemplate.delete(keys);
+
+//指定 key 的失效时间
+redisTemplate.expire(key, time, TimeUnit.MINUTES);
+
+//根据 key 获取过期时间
+Long expire = redisTemplate.getExpire(key);
+return expire;
+
+//判断 key 是否存在
+return redisTemplate.hasKey(key);
+
+```
 
 ## String 类型
 
