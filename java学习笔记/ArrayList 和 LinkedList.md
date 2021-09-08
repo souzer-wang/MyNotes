@@ -22,12 +22,59 @@ ArrayList主要控件开销在于需要在lList列表预留一定空间；而Lin
 ### 增加
 
 - add(e)： 链表尾部添加，通用方法
+  - 从源码看，add 不仅把元素链接到队列尾部，还返回 true
+```java
+public boolean add(E e) {
+  linkLast(e);
+  return true;
+}
+```
 - addFirst(e)： 在链表头部添加，特有方法
+```java
+public void addFirst(E e) {
+  linkFirst(e);
+}
+```
 - addLast(e)： 在链表尾部添加，特有
+  - 从源码来看，addLast 就是把元素链接到队列尾部
+```java
+public void addLast(E e) {
+  linkLast(e);
+}
+```
 - push(e)： 与addFirst一致
 - offer(e): 与addLast一致
+  - offer 直接调用了 add 方法，所以在 LinkedList 中 add() 和 offer() 使用起来是一样的
+```java
+public boolean offer(E e) {
+  return add(e);
+}
+```
+> 补充说明 add 和 offer 的区别：
+> LinkedList 是继承了 Deque 接口，而 Deque 接口继承了 Queue 接口，在 Queue 中对于 add 和 offer 的 区别是这样介绍的
+> 
+> add(): 
+> - 在不违背队列容量限制的情况下，往队列中添加一个元素
+>   - 如果添加成功，返回 true
+>   - 如果因为容量限制添加失败，抛出异常
+> 
+> offer():
+> - 在不违背队列容量限制的情况下，往队列中添加一个元素
+>   - 如果添加成功，返回 true
+>   - 如果因为容量限制添加失败，返回 false
+> 
+> 在容量限制的队列中，offer 方法优于 add 方法，因为处理抛出的异常更加耗时，offer 直接返回 false 的方法更好
+
 - add(idx, e)：在指定位置插入一个元素
 - offerFirst(e)：在头部添加
+- offerLast(e): 在尾部添加
+  - 将元素添加到队尾并返回 true，可以看出 offerLast 和 add 的效果是一样的
+```java
+public boolean offerLast(E e) {
+  addLast(e);
+  return true;
+}
+```
 
 ```java
 LinkedList<Integer> t = new LinkedList<>();
@@ -45,8 +92,25 @@ t.offerFirst(7); //[7, 4, 2, 6, 1, 3, 5]
 - remove()：移除第一个元素，通用
 - remove(idx)：移除指定元素，通用
 - removeFirst()：删除头，获取元素并删除，特有
+  - 删除并返回队首元素，若队列为空，则抛出异常
+```java
+public E removeFirst() {
+  final Node<E> f = first;
+  if (f == null) {
+    throw new NoSuchElementException();
+  }
+  return unlinkFirst(f);
+}
+```
 - removeLast()：删除尾，特有方法
 - pollFirst()：删除头，特有方法
+  - 删除并返回队首元素，若队列为空，返回 null
+```java
+public E pollFirst() {
+  final Node<E> f = first;
+  return (f == null) ? null:unlinkFirst(f);
+}
+```
 - pollLast()：删除尾，特有方法
 - pop()：和removeFirst一致
 - poll()：查询并移除第一个元素，特有
@@ -63,11 +127,23 @@ t.offerFirst(7); //[7, 4, 2, 6, 1, 3, 5]
 - pollLast()：查询并删除尾，特有
 - poll()： 查询并删除头，特有
 
+#### 小结
+
+- 需要链接元素到队列尾时优先使用 offer()
+- 查看元素优先使用 peek()
+- 删除元素优先使用 poll()
+
+**Others**
+- 想要在指定位置链接元素可以使用 add(int index, E element)
+- 获取指定索引的元素可以使用 get(int index)
+- 修改指定索引的元素可以使用 set(int index, E newElement)
+
 ## ArrayList 用法详解
 
 1. 什么是 ArrayList
 
 ArrayList 是 Java 集合框架中的一个重要的类，它继承自 AbstractList，实现了 List 接口，具体如下：
+
 ![结构层次](https://img-blog.csdn.net/20160311083300211)
 
 除此以外，它还实现了 RandomAccess、Cloneable、Serializable接口，因而它分别支持 快速访问、复制、序列化 

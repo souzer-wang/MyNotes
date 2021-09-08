@@ -26,7 +26,7 @@ class Solution {
                 return nums1[index1 + k - 1];
             }
             if (k == 1) {
-                return Math.max(nums1[index1], nums2[index2]);
+                return Math.min(nums1[index1], nums2[index2]);
             }
             //正常情况
             int newIndex1 = Math.min(index1 + k / 2, length1) - 1;
@@ -71,4 +71,27 @@ class Solution:
         k1 = (len(nums1) + len(nums2) + 1) // 2
         k2 = (len(nums1) + len(nums2) + 1) // 2
         return (findKthElement(nums1, nums2, k1) + findKthElement(nums1, nums2, k2)) / 2
+```
+
+上面的python解法和java解题的思路是一致的，或者也可以换一种思路
+
+```python
+class Solution:
+    def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
+        def find(nums1, nums2, k):
+            if len(nums1) < len(nums2):
+                nums1, nums2 = nums2, nums1
+            if len(nums2) == 0:
+                return nums1[k - 1]
+            if k == 1:
+                return min(nums1[0], nums2[0])
+            t = min(k // 2, len(nums2))
+            if nums1[t - 1] < nums2[t - 1]:
+                return find(nums1[t:], nums2, k - t)
+            else:
+                return find(nums1, nums2[t:], k - t)
+        
+        k1 = (len(nums1) + len(nums2) + 1) // 2
+        k2 = (len(nums1) + len(nums2) + 2) // 2
+        return (find(nums1, nums2, k1) + find(nums1, nums2, k2)) / 2
 ```
